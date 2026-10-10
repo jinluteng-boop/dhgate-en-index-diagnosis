@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DHgate EN Product SEO 索引下降排查报告：GSC 迁移、样本验证、Sitemap 与整改方案。">
+  <title>EN Product SEO 索引下降排查报告</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Cpath d='M14 45V19h8l10 14 10-14h8v26h-8V31L32 44 22 31v14z' fill='%232dd4bf'/%3E%3C/svg%3E">
+  <style>
+    :root{--bg:#07101e;--panel:#0d1829;--panel2:#111f34;--line:#22324a;--text:#ecf4ff;--muted:#91a4bd;--cyan:#38bdf8;--teal:#2dd4bf;--amber:#fbbf24;--red:#fb7185;--purple:#a78bfa;--good:#34d399;--shadow:0 18px 44px rgba(0,0,0,.25)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 85% -10%,#16395d 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.65 Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1280px;margin:auto;padding:0 28px}.topbar{position:sticky;top:0;z-index:20;background:rgba(7,16,30,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.topbar .wrap{display:flex;align-items:center;gap:18px;min-height:66px}.brand{font-weight:800;letter-spacing:.02em;white-space:nowrap}.brand i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--teal);box-shadow:0 0 18px var(--teal);margin-right:9px}.nav{display:flex;gap:5px;overflow:auto;scrollbar-width:none}.nav button,.tool{border:1px solid transparent;background:transparent;color:var(--muted);padding:8px 11px;border-radius:9px;white-space:nowrap}.nav button:hover,.nav button.active{color:var(--text);background:#14233a;border-color:#29405f}.tools{display:flex;gap:7px;margin-left:auto}.tool{border-color:var(--line);color:var(--text)}.tool:hover{border-color:var(--cyan)}
+    header{padding:70px 0 36px}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.hero-grid{display:grid;grid-template-columns:1.55fr .75fr;gap:28px;align-items:end}h1{font-size:clamp(38px,5vw,70px);line-height:1.05;margin:13px 0 18px;letter-spacing:-.045em}.lead{font-size:18px;color:#b6c6da;max-width:850px}.verdict{border:1px solid #246a76;background:linear-gradient(135deg,rgba(45,212,191,.12),rgba(56,189,248,.06));padding:21px;border-radius:18px}.verdict strong{font-size:22px;display:block;margin-bottom:8px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.chip{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px;background:rgba(13,24,41,.7)}
+    section{padding:38px 0;scroll-margin-top:76px}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}.section-head h2{margin:0;font-size:30px;letter-spacing:-.025em}.section-head p{margin:0;color:var(--muted);max-width:680px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.kpi{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.kpi .label{font-size:12px;color:var(--muted);font-weight:700}.kpi .value{font-size:29px;font-weight:850;line-height:1.2;margin:8px 0 4px}.kpi .delta{font-size:13px}.bad{color:var(--red)}.warn{color:var(--amber)}.good{color:var(--good)}.cyan{color:var(--cyan)}.muted{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}.card h3{margin:0 0 10px;font-size:18px}.card p{color:#b9c8d9;margin:7px 0}.rank{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#17314c;color:var(--cyan);font-weight:800;margin-bottom:14px}.confidence{font-size:11px;border:1px solid #31506d;color:#abc5df;border-radius:999px;padding:3px 8px;margin-left:6px;vertical-align:2px}
+    .chart{margin-top:18px}.bar-row{display:grid;grid-template-columns:220px 1fr 128px;gap:12px;align-items:center;margin:10px 0}.bar-label{color:#cbd8e8}.track{height:13px;background:#16253a;border-radius:99px;overflow:hidden}.fill{height:100%;width:var(--w);background:var(--c);border-radius:99px;transition:width .65s ease}.bar-value{text-align:right;font-variant-numeric:tabular-nums}.stack{height:34px;display:flex;border-radius:9px;overflow:hidden;background:#16253a;margin:18px 0 8px}.stack span{display:grid;place-items:center;min-width:2px;font-size:11px;font-weight:800;color:#07101e;overflow:hidden;white-space:nowrap}.legend{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:#091423}.toggle button{border:0;background:transparent;color:var(--muted);padding:6px 10px;border-radius:7px}.toggle button.active{background:#20334e;color:var(--text)}
+    .timeline{position:relative;padding-left:26px}.timeline:before{content:"";position:absolute;left:7px;top:7px;bottom:8px;width:2px;background:#29405a}.event{position:relative;margin:0 0 24px}.event:before{content:"";position:absolute;left:-24px;top:7px;width:12px;height:12px;background:var(--cyan);border-radius:50%;box-shadow:0 0 0 4px #0d1b2e}.event time{color:var(--cyan);font-weight:750}.event b{display:block;font-size:17px}.event span{color:var(--muted)}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metricbox{background:#0a1423;border:1px solid var(--line);border-radius:12px;padding:16px}.metricbox .big{font-size:27px;font-weight:850}.arrow{color:var(--muted);padding:0 5px}.callout{border-left:3px solid var(--amber);background:rgba(251,191,36,.07);padding:14px 16px;border-radius:0 10px 10px 0;margin-top:15px;color:#d8e2ee}.callout.red{border-color:var(--red);background:rgba(251,113,133,.07)}.callout.green{border-color:var(--good);background:rgba(52,211,153,.06)}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.filter{border:1px solid var(--line);background:#0b1728;color:var(--text);padding:9px 12px;border-radius:9px}.filter.active{border-color:var(--cyan);color:var(--cyan)}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:#9eb1c7;background:#101e31;position:sticky;top:0;cursor:pointer}td{color:#d4dfeb}tr:last-child td{border-bottom:0}tbody tr:hover{background:#111f33}.tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:750}.tag.p0{color:#fecdd3;background:#4c1826}.tag.p1{color:#fde68a;background:#493414}.tag.p2{color:#bae6fd;background:#12374e}.tag.ok{color:#bbf7d0;background:#143d32}
+    details{border:1px solid var(--line);border-radius:12px;background:#0c1727;margin:10px 0}summary{padding:14px 16px;cursor:pointer;font-weight:750;list-style:none}summary::-webkit-details-marker{display:none}summary:after{content:"＋";float:right;color:var(--cyan)}details[open] summary:after{content:"－"}.detail-body{padding:0 16px 16px;color:#b8c7d9}.evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.evidence{border:1px solid var(--line);border-radius:12px;padding:15px;background:#0a1422}.evidence b{display:block;font-size:19px}.evidence small{color:var(--muted)}
+    .matrix{display:grid;grid-template-columns:140px repeat(3,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}.matrix>div{padding:13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.matrix>div:nth-child(4n){border-right:0}.matrix .head{background:#111f33;font-weight:800}.matrix .rowhead{color:var(--muted)}.action{border-top:3px solid var(--c)}.action ul{padding-left:18px;color:#bdcadd}.action .owner{font-size:12px;color:var(--muted);margin-top:14px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#07101c;border:1px solid var(--line);padding:12px;border-radius:9px;color:#c5e8ff;overflow:auto;white-space:pre-wrap}
+    footer{border-top:1px solid var(--line);margin-top:40px;padding:35px 0 55px;color:var(--muted)}.toast{position:fixed;right:24px;bottom:24px;background:#17304a;border:1px solid #315a7d;padding:11px 15px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:99}.toast.show{opacity:1;transform:none}.hidden{display:none!important}
+    @media(max-width:900px){.hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.evidence-grid{grid-template-columns:1fr}.bar-row{grid-template-columns:150px 1fr 95px}.matrix{display:block}.matrix>div{border-right:0}.matrix .head{position:sticky;top:64px}.tools .hide-sm{display:none}}
+    @media(max-width:560px){.wrap{padding:0 17px}.kpis{grid-template-columns:1fr}.topbar .brand{display:none}header{padding-top:42px}.compare{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr}.bar-value{text-align:left}.matrix{font-size:13px}}
+    @media print{body{background:white;color:#111}.topbar,.controls,.tools,.toast{display:none!important}.card,.kpi,details{box-shadow:none;background:white;color:#111;border-color:#ccc;break-inside:avoid}.muted,.card p,.detail-body,footer{color:#444}section{padding:20px 0}.wrap{max-width:none}.fill{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><i></i>SEO INDEX LAB</div>
+    <nav class="nav" aria-label="报告导航">
+      <button data-target="overview" class="active">结论</button><button data-target="crawl">抓取变化</button><button data-target="migration">迁移去向</button><button data-target="validation">样本验证</button><button data-target="diagnosis">技术诊断</button><button data-target="actions">整改方案</button><button data-target="sources">数据口径</button>
+    </nav>
+    <div class="tools"><button class="tool hide-sm" id="copyBtn">复制结论</button><button class="tool" onclick="window.print()">打印 / PDF</button></div>
+  </div></div>
+
+  <header><div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">DHgate · GSC / BigQuery / Live HTTP / Sitemap</div>
+      <h1>EN Product<br>SEO 索引下降排查</h1>
+      <p class="lead">围绕 2026 年 9 月 21 日前后的索引突变，结合巡天同期累计唯一抓取、GSC 覆盖迁移、搜索表现与实时 URL 状态，区分直接原因、后续表现和问题放大器。</p>
+      <div class="chips"><span class="chip">GSC 数据更新至 2026-10-04</span><span class="chip">巡天唯一抓取：9/9 vs 10/9</span><span class="chip">BigQuery 窗口：180 天，至 2026-09-15</span><span class="chip">HTTP 抽样：2026-10-08</span><span class="chip">只读诊断，不含线上改动</span></div>
+    </div>
+    <aside class="verdict"><span class="eyebrow">核心判断</span><strong>质量重评估后，抓取优先级同步降低</strong><p>9 月 22 日 EN Product 已索引量单日下降 201.65 万；10 月 9 日同期累计 Product 唯一抓取较 9 月 9 日下降 47.4%。索引下降早于抓取对比期，因此抓取缩量更像重评估后的结果，而非直接起因。</p></aside>
+  </div></header>
+
+  <main>
+    <section id="overview"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Executive summary</div><h2>先看结论，再看证据</h2></div><p>数据支持“EN 低价值 URL 池被集中重评估，并在之后降低抓取优先级”的判断；不支持 Google 整体抓取波动或全站索引指令事故。</p></div>
+      <div class="kpis">
+        <div class="kpi"><div class="label">已索引 · 9/21 → 9/22</div><div class="value bad">−2,016,527</div><div class="delta bad">−35.65% · 565.69万 → 364.04万</div></div>
+        <div class="kpi"><div class="label">未索引 · 9/21 → 9/22</div><div class="value warn">+2,393,148</div><div class="delta warn">+6.13% · 3903.46万 → 4142.77万</div></div>
+        <div class="kpi"><div class="label">同日搜索曝光</div><div class="value good">+6.44%</div><div class="delta good">336,453 → 358,135</div></div>
+        <div class="kpi"><div class="label">首要迁移方向</div><div class="value cyan">74.5%</div><div class="delta cyan">已抓取—尚未编入索引</div></div>
+      </div>
+      <div class="grid-3" style="margin-top:16px">
+        <article class="card"><span class="rank">1</span><h3>主体是质量重评估 <span class="confidence">高置信</span></h3><p>“已抓取未索引”单日增加 178.23 万，占全部未索引增量的 74.5%，并解释了索引下降规模的 88.4%。</p></article>
+        <article class="card"><span class="rank">2</span><h3>不是全站指令故障 <span class="confidence">高置信</span></h3><p>有效 200 样本均为 indexable、self-canonical，且包含正常标题、描述与 Product 结构化数据。</p></article>
+        <article class="card"><span class="rank">3</span><h3>抓取下降是后续表现 <span class="confidence">中高置信</span></h3><p>10 月同期 EN Product 唯一抓取下降 47.4%，而多语站未同步大幅下降，更接近 EN 页面池被降低抓取优先级，而非 Googlebot 全局波动。</p></article>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card"><h3>突变时间线</h3><div class="timeline">
+          <div class="event"><time>2026-09-21</time><b>基准日</b><span>已索引 5,656,914；未索引 39,034,560。</span></div>
+          <div class="event"><time>2026-09-22</time><b>集中重分类</b><span>已索引骤降 2,016,527；未索引增加 2,393,148。</span></div>
+          <div class="event"><time>2026-09-22 → 10-04</time><b>曲线横盘</b><span>GSC 覆盖数基本保持稳定，未继续按日恶化。</span></div>
+          <div class="event"><time>2026-10-08</time><b>线上样本复核</b><span>确认失效 URL、非等价重定向和参数复制三类结构性问题。</span></div>
+          <div class="event"><time>2026-10-09</time><b>同期抓取节奏下降</b><span>EN 总唯一抓取较 9 月 9 日下降 49.3%，Product 下降 47.4%。</span></div>
+        </div></div>
+        <div class="card"><h3>跨站对照：EN 是异常主因</h3><div id="siteBars" class="chart"></div><div class="callout">DE / ES / FR / IT 合计仅下降 15.71 万（−0.88%）；EN 占五站净下降约 93%，不是多语站同步波动。</div></div>
+      </div>
+    </div></section>
+
+    <section id="crawl"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Crawl demand</div><h2>EN 唯一抓取量同期下降</h2></div><p>巡天 <code>en_total_count</code> 为当月累计唯一抓取量；比较 9 月 9 日与 10 月 9 日，保证两个周期均累计至当月第 9 天。</p></div>
+      <div class="kpis">
+        <div class="kpi"><div class="label">EN 总唯一抓取量</div><div class="value bad">−49.3%</div><div class="delta bad">11,035,401 → 5,596,209</div></div>
+        <div class="kpi"><div class="label">Product 唯一抓取量</div><div class="value bad">−47.4%</div><div class="delta bad">8,986,357 → 4,724,616</div></div>
+        <div class="kpi"><div class="label">Goods 唯一抓取量</div><div class="value warn">−38.8%</div><div class="delta warn">464,056 → 284,165</div></div>
+        <div class="kpi"><div class="label">SRP / Wholesale 唯一抓取量</div><div class="value bad">−70.4%</div><div class="delta bad">837,704 → 248,322</div></div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card"><h3>9月9日与10月9日累计值</h3><div id="crawlBars" class="chart"></div><div class="callout">Product 减少 4,261,741，贡献 EN 总抓取减少量的约 78.4%；SRP 降幅最大，达到 70.4%。</div></div>
+        <div class="card"><h3>抓取下降与索引下降的关系</h3><div class="timeline">
+          <div class="event"><time>先发生</time><b>9月22日索引集中重分类</b><span>已索引减少 201.65 万，主体增量进入“已抓取未索引”。</span></div>
+          <div class="event"><time>后观察</time><b>10月同期累计抓取减少</b><span>Google 对 EN Product 的重复抓取和资源投入同步降低。</span></div>
+        </div><div class="callout green"><b>判断：</b>两项数据共同指向 EN Product 页面池的质量和生命周期问题。由于 9 月 22 日索引下降早于 10 月同期抓取缩量，不能表述为“抓取下降导致索引下降”；更合理的解释是质量重评估先发生，抓取优先级下降是后续表现。</div></div>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>唯一抓取量明细</h3><div class="table-wrap"><table><thead><tr><th>指标</th><th>2026-09-09</th><th>2026-10-09</th><th>变化量</th><th>同期变化</th><th>判断</th></tr></thead><tbody>
+        <tr><td>EN站总唯一抓取量</td><td>11,035,401</td><td>5,596,209</td><td class="bad">−5,439,192</td><td class="bad">−49.3%</td><td>抓取规模接近减半</td></tr>
+        <tr><td>Product唯一抓取量</td><td>8,986,357</td><td>4,724,616</td><td class="bad">−4,261,741</td><td class="bad">−47.4%</td><td>全站下降的主要来源</td></tr>
+        <tr><td>Goods唯一抓取量</td><td>464,056</td><td>284,165</td><td class="warn">−179,891</td><td class="warn">−38.8%</td><td>同步下降，规模较小</td></tr>
+        <tr><td>SRP / Wholesale唯一抓取量</td><td>837,704</td><td>248,322</td><td class="bad">−589,382</td><td class="bad">−70.4%</td><td>降幅最大，需单独排查发现入口</td></tr>
+      </tbody></table></div></div>
+    </div></section>
+
+    <section id="migration"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Where did pages go</div><h2>已索引量迁移到哪里</h2></div><div class="toggle" aria-label="数值显示方式"><button class="active" data-mode="share">贡献占比</button><button data-mode="absolute">绝对增量</button></div></div>
+      <div class="grid-2">
+        <div class="card"><h3>未索引增量构成</h3><div class="stack" aria-label="未索引增量堆叠图"><span style="width:74.48%;background:#38bdf8">74.5%</span><span style="width:20.51%;background:#fbbf24">20.5%</span><span style="width:5.97%;background:#a78bfa">6.0%</span></div><div class="legend"><span><i class="dot" style="background:#38bdf8"></i>已抓取未索引</span><span><i class="dot" style="background:#fbbf24"></i>已发现未索引</span><span><i class="dot" style="background:#a78bfa"></i>重定向</span><span><i class="dot" style="background:#fb7185"></i>抵消项</span></div><div id="reasonBars" class="chart"></div></div>
+        <div class="card"><h3>数值关系不等于 URL 逐条迁移</h3><div class="compare"><div class="metricbox"><span class="muted">索引减少</span><div class="big bad">−2.017M</div></div><div class="metricbox"><span class="muted">未索引增加</span><div class="big warn">+2.393M</div></div></div><p>两侧相差 376,621，说明 GSC 聚合覆盖池同时存在新增发现、消失 URL、口径重算等变化。这里能证明“同日池子变化方向”，不能从聚合图直接证明每一个 URL 的状态迁移。</p><div class="callout red"><b>归因边界：</b>“已抓取未索引增加量 / 索引下降量 = 88.4%”是规模匹配，不是 URL 级 cohort 追踪。</div></div>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>9/21 → 9/22 原因明细</h3><div class="table-wrap"><table id="migrationTable"><thead><tr><th data-sort="text">原因</th><th data-sort="num">9/21</th><th data-sort="num">9/22</th><th data-sort="num">变化</th><th data-sort="num">对未索引增量贡献</th><th>判断</th></tr></thead><tbody></tbody></table></div></div>
+    </div></section>
+
+    <section id="validation"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Sample validation</div><h2>150 条搜索数据 + 60 条实时状态</h2></div><p>样本用于验证“低搜索价值”和“当前 URL 状态”，不把零曝光等同于零 GMV。</p></div>
+      <div class="grid-3">
+        <div class="card"><h3>BigQuery：已抓取未索引</h3><div class="value" style="font-size:34px;font-weight:850">50 / 50</div><p>180 天曝光 = 0 且点击 = 0</p></div>
+        <div class="card"><h3>BigQuery：已发现未索引</h3><div class="value" style="font-size:34px;font-weight:850">50 / 50</div><p>180 天曝光 = 0 且点击 = 0</p></div>
+        <div class="card"><h3>BigQuery：重定向</h3><div class="value" style="font-size:34px;font-weight:850">50 / 50</div><p>180 天曝光 = 0 且点击 = 0</p></div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card"><h3>Googlebot 实时 HTTP 抽样</h3><div id="httpBars" class="chart"></div><div class="callout">“已发现未索引”20 条样本中，13 条已返回 410、1 条 404；失效 URL 仍留在 Google 的发现队列，说明清退链路滞后。</div></div>
+        <div class="card"><h3>有效 200 页面技术信号</h3><div class="evidence-grid">
+          <div class="evidence"><small>Meta robots</small><b class="good">16 / 16</b><span>允许索引</span></div>
+          <div class="evidence"><small>Canonical</small><b class="good">16 / 16</b><span>自指</span></div>
+          <div class="evidence"><small>页面要素</small><b class="good">16 / 16</b><span>标题/描述/Product 数据正常</span></div>
+        </div><p>这批有效页没有发现系统性 noindex、canonical 指向其他页或 robots 阻断。问题更接近“价值判断与 URL 池治理”，而非模板级索引指令错误。</p></div>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>1000 条 GSC 示例的 URL 结构</h3><div class="table-wrap"><table><thead><tr><th>原因池</th><th>唯一 URL / ID</th><th>带参数</th><th>ID 中位数</th><th>ID ≥ 1.1B</th><th>抓取状态特征</th></tr></thead><tbody>
+        <tr><td>已抓取未索引</td><td>1,000 / 1,000</td><td class="warn">165（16.5%）</td><td>1,104,286,756</td><td>545（54.5%）</td><td>样本均显示 2026-10-06 抓取</td></tr>
+        <tr><td>已发现未索引</td><td>1,000 / 1,000</td><td>0</td><td>850,577,673</td><td>104（10.4%）</td><td class="bad">无抓取日期</td></tr>
+        <tr><td>重定向</td><td>1,000 / 1,000</td><td>0</td><td>1,098,063,387</td><td>459（45.9%）</td><td>样本均显示 2026-10-06 抓取</td></tr>
+        <tr><td>替代页 / 正确 canonical</td><td>1,000 行 / 984 ID</td><td class="bad">891（89.1%）</td><td>—</td><td>—</td><td>参数以 f / linkPage / skuid 为主</td></tr>
+      </tbody></table></div><p class="muted">注：商品 ID 仅作为新旧程度代理，不能替代真实上线日期。</p></div>
+    </div></section>
+
+    <section id="diagnosis"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Root cause map</div><h2>技术诊断：主因与放大器</h2></div><p>把“索引下降”拆成四个可以被产研改造的系统问题。</p></div>
+      <div class="controls" id="diagFilters"><button class="filter active" data-filter="all">全部</button><button class="filter" data-filter="primary">主因</button><button class="filter" data-filter="amplifier">放大器</button><button class="filter" data-filter="risk">风险项</button></div>
+      <div class="grid-2" id="diagnosisGrid">
+        <article class="card diag" data-type="primary"><span class="tag p0">主因 · P0</span><h3>低 / 无搜索价值 URL 被集中重评估</h3><p>证据：已抓取未索引增加 178.23 万；150 条三类样本近 180 天曝光与点击全部为 0；搜索曝光并未随索引量同步下跌；之后 EN Product 同期累计唯一抓取下降 47.4%。</p><div class="callout green">解释力最强：Google 更像是在削减低价值索引库存，并降低后续抓取优先级，而非丢失有稳定流量的核心页。</div></article>
+        <article class="card diag" data-type="amplifier"><span class="tag p0">放大器 · P0</span><h3>URL 生命周期清退不完整</h3><p>“已发现未索引”实时抽样 70% 已为 404/410，说明下架页仍可被 Sitemap、内链或其他入口持续发现。</p><details><summary>为什么会消耗抓取与索引资源</summary><div class="detail-body">Google 需要反复发现、调度和确认这些 URL，放大“已发现未索引”队列；失效页若仍在站内链接与 Sitemap 中，也会降低信号一致性。</div></details></article>
+        <article class="card diag" data-type="risk"><span class="tag p0">风险 · P0</span><h3>非等价商品 308 替换</h3><p>重定向样本 20/20 为 308，多条目标与原商品语义明显不一致，如“陶瓷花瓶 → 姓名字母设计”“休闲 T 恤 → 篮球球衣”。</p><details><summary>风险边界</summary><div class="detail-body">这会稀释原 URL 信号，并可能被搜索引擎视为不相关重定向或软 404。这里只能确认语义不等价风险，不能声称 Google 已对这些 URL 作出某种具体处罚。</div></details></article>
+        <article class="card diag" data-type="amplifier"><span class="tag p0">放大器 · P0</span><h3>Product Sitemap 父索引处理异常</h3><p>公网父索引现有 692 个有效子 Sitemap，每个约 1 万 URL；GSC 长期只识别 1 个子文件、10,000 个 URL。</p><p>对照 Goods 父索引：129 个当前子文件，GSC 读取 123 个，发现 6,136,482 个 URL。</p><div class="callout">同主机、目录、CDN 与 gzip/XML 形态下，差异更指向 Product 父索引历史快照、原子发布、缓存或版本一致性问题。</div></article>
+        <article class="card diag" data-type="amplifier"><span class="tag p1">放大器 · P1</span><h3>跟踪参数复制 URL</h3><p>已抓取未索引中 16.5% 带参数；替代 canonical 池中高达 89.1%，主要是 <code>f</code>、<code>linkPage</code>、<code>skuid</code>。</p><p>虽然 canonical 可合并信号，但参数 URL 仍消耗发现、抓取与 canonical 计算资源。</p></article>
+        <article class="card diag" data-type="risk"><span class="tag p1">数据边界</span><h3>不能直接批量 noindex</h3><p>GSC 零曝光 / 零点击不等于 GMV=0；BigQuery 数据止于 9 月 15 日，且缺少真实上线日期与交易字段。</p><p>生产规则必须 LEFT JOIN 商品主表与交易表，并设置白名单、观察期、版本和回滚机制。</p></article>
+      </div>
+    </div></section>
+
+    <section id="actions"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Remediation roadmap</div><h2>整改方案：先止损，再提质</h2></div><p>每项动作都绑定判定规则、数据源、验收指标与回滚能力。</p></div>
+      <div class="grid-3">
+        <article class="card action" style="--c:#fb7185"><span class="tag p0">P0 · 生命周期</span><h3>失效 URL 日清</h3><ul><li>每日从商品主表提取停售/删除/失效状态。</li><li>从 Product Sitemap、内链、hreflang、结构化数据中同步移除。</li><li>无等价替代品返回 410；有一对一等价商品才允许 301/308。</li><li>目标页必须一次到达 200、self-canonical、indexable。</li></ul><div class="owner">验收：Sitemap 中 3xx/4xx/410 = 0；链式跳转 = 0</div></article>
+        <article class="card action" style="--c:#fb7185"><span class="tag p0">P0 · 重定向</span><h3>停止非等价自动替换</h3><ul><li>重定向匹配至少校验类目、核心属性、品牌/型号与意图。</li><li>不满足语义等价时直接 410，不跳到“相似热销品”。</li><li>对现存 308 建立抽样相关性评分与批量复核。</li><li>保留规则版本、原目标、修复时间和回滚记录。</li></ul><div class="owner">验收：抽样语义不等价率 &lt; 5%</div></article>
+        <article class="card action" style="--c:#fb7185"><span class="tag p0">P0 · Sitemap</span><h3>原子发布与端到端监控</h3><ul><li>先生成并验证全部子文件，再以临时父文件原子 rename。</li><li>更新 ETag / Last-Modified，发布后主动清理 CDN 缓存。</li><li>比对预期子文件数、源站、边缘节点与 GSC 已读取数。</li><li>禁止父索引短暂暴露只有 1 个子文件的中间态。</li></ul><div class="owner">验收：692 个子文件可读；GSC 识别量持续恢复</div></article>
+        <article class="card action" style="--c:#fbbf24"><span class="tag p1">P1 · 准入</span><h3>Sitemap 只收高质量可索引页</h3><ul><li>HTTP 200、允许索引、自指 canonical。</li><li>商品可售/有库存，标题、主图、价格和核心属性完整。</li><li>URL 无跟踪参数，无重定向与软 404 风险。</li><li>状态变化后在 24 小时内退出 Sitemap。</li></ul><div class="owner">数据：商品主表 + 页面渲染检查 + HTTP 探针</div></article>
+        <article class="card action" style="--c:#fbbf24"><span class="tag p1">P1 · 参数</span><h3>阻断参数 URL 的站内传播</h3><ul><li>Sitemap、内链、hreflang、schema 统一使用 clean URL。</li><li>前端埋点用事件或属性，不把 f / linkPage / skuid 写入可抓取链接。</li><li>保留 canonical 兜底，但不把它当作参数治理的唯一手段。</li></ul><div class="owner">验收：新发现参数 URL 占比周环比持续下降</div></article>
+        <article class="card action" style="--c:#38bdf8"><span class="tag p2">P2 · 分层</span><h3>新品分层进入索引池</h3><ul><li>A：高潜商品进入高优 Sitemap，强内链。</li><li>B：质量合格但信号弱，进入观察池并补充内容。</li><li>C：信息不足/重复/不可售，暂不进 Sitemap。</li><li>只有连接上线天数、曝光点击、GMV/订单后，才评估 noindex。</li></ul><div class="owner">原则：零 GSC 活动不能单独触发 noindex</div></article>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>上线门槛与决策矩阵</h3><div class="matrix">
+        <div class="head">对象</div><div class="head">保留索引</div><div class="head">观察 / 修复</div><div class="head">退出索引池</div>
+        <div class="rowhead">有效商品页</div><div>200 + 自指 canonical + 可售 + 内容完整 + 有搜索/交易信号</div><div>200 且可售，但内容不足或 180 天无搜索信号；先补质并观察</div><div>满足业务规则且真实上线期、搜索与 GMV 均长期为 0，进入可回滚 noindex 候选</div>
+        <div class="rowhead">下架商品页</div><div>存在严格一对一等价替代品时保留信号</div><div>短期缺货可保留 200 并明确状态</div><div>无等价替代品返回 410，并从全部发现入口移除</div>
+        <div class="rowhead">参数 URL</div><div>clean URL 为唯一可索引版本</div><div>canonical 合并并停止新增传播</div><div>不进入 Sitemap、hreflang、schema 和站内可抓取链接</div>
+      </div></div>
+      <div class="card" style="margin-top:16px"><h3>建议的 14 天验证闭环</h3><div class="timeline">
+        <div class="event"><time>D0–D2</time><b>冻结风险源</b><span>停止非等价重定向；确认 Product Sitemap 生成与 CDN 发布链路。</span></div>
+        <div class="event"><time>D3–D7</time><b>清退污染 URL</b><span>清除 Sitemap/内链中的 3xx、4xx、410 与参数 URL；建立每日差异表。</span></div>
+        <div class="event"><time>D8–D14</time><b>观察恢复</b><span>监控父索引已读子文件数、新增已发现/已抓取未索引、有效页索引覆盖与曝光。</span></div>
+      </div></div>
+    </div></section>
+
+    <section id="sources"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Data appendix</div><h2>数据源与口径</h2></div><button class="tool" id="csvBtn">下载数据源表 CSV</button></div>
+      <div class="card"><div class="table-wrap"><table id="sourceTable"><thead><tr><th>数据源</th><th>范围 / 样本</th><th>数据日期</th><th>用于回答</th><th>限制</th></tr></thead><tbody>
+        <tr><td>GSC Page Indexing</td><td>https://www.dhgate.com/product/</td><td>2026-09-21 至 2026-10-04</td><td>索引总量、未索引原因迁移</td><td>聚合数；示例最多 1000；不能做 URL cohort</td></tr>
+        <tr><td>GSC Search Performance</td><td>EN Product 日曝光</td><td>关键日 2026-09-21/22</td><td>判断可见性是否同步崩跌</td><td>曝光不等于 GMV；数据可能有延迟</td></tr>
+        <tr><td>BigQuery GoodsAndProduct</td><td>3 类各 50 URL，共 150</td><td>2026-03-20 至 2026-09-15</td><td>180 天曝光/点击验证</td><td>止于突变前 6 天；无真实上线日与 GMV字段</td></tr>
+        <tr><td>GSC 示例 URL</td><td>4 类各 1000 行</td><td>导出时点</td><td>参数、ID、抓取日期结构</td><td>Google 提供样本，不代表总体分布</td></tr>
+        <tr><td>Googlebot UA 实时请求</td><td>3 类各 20 URL，共 60</td><td>2026-10-08</td><td>HTTP 状态与页面索引信号</td><td>小样本；状态会随商品生命周期变化</td></tr>
+        <tr><td>巡天 en_total_count</td><td>EN 全站及 Product / Goods / Wholesale 月累计唯一抓取</td><td>2026-09-09、2026-10-09</td><td>对比同月第9天抓取节奏</td><td>累计唯一URL，不等于日请求量；不能单独证明因果</td></tr>
+        <tr><td>公网 Sitemap 对照</td><td>Product 692 子文件；Goods 129 子文件</td><td>排查时点</td><td>验证父索引读取差异</td><td>GSC 抓取历史快照不可完全还原</td></tr>
+      </tbody></table></div></div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card"><h3>当前未索引原因快照 · 2026-10-04</h3><div id="currentReasonBars" class="chart"></div></div>
+        <div class="card"><h3>必须保留的判断边界</h3>
+          <details open><summary>“零曝光/点击”不等于“零业务价值”</summary><div class="detail-body">必须连接真实上线时间、GMV、订单、库存与利润等业务数据，再形成生产 noindex 候选。</div></details>
+          <details><summary>GSC 原因变化不是逐 URL 迁移表</summary><div class="detail-body">本报告按同日池子变化推断主要方向，不能证明某一条已索引 URL 必然进入了某个原因池。</div></details>
+          <details><summary>Sitemap 异常是放大器，不是唯一根因</summary><div class="detail-body">GSC 主体增量在“已抓取未索引”，说明大量 URL 已经被抓取；父索引读取异常会削弱发现与信号刷新，但不足以单独解释全部 201.65 万索引下降。</div></details>
+        </div>
+      </div>
+    </div></section>
+  </main>
+
+  <footer><div class="wrap"><b>结论版本：2026-10-10</b><br>报告基于排查时点可见的 GSC、巡天、BigQuery、实时 HTTP 与 Sitemap 数据；所有线上改动需通过灰度、监控与回滚验证。</div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const siteData=[
+      {site:'EN',delta:-2016527,pct:-35.65,color:'#fb7185'},
+      {site:'DE',delta:203605,pct:7.36,color:'#34d399'},
+      {site:'ES',delta:-324356,pct:-3.62,color:'#fbbf24'},
+      {site:'FR',delta:47550,pct:1.51,color:'#34d399'},
+      {site:'IT',delta:-83905,pct:-2.77,color:'#fbbf24'}
+    ];
+    const crawlData=[
+      {label:'EN 总量',sep:11035401,oct:5596209,pct:-49.3},
+      {label:'Product',sep:8986357,oct:4724616,pct:-47.4},
+      {label:'Goods',sep:464056,oct:284165,pct:-38.8},
+      {label:'SRP / Wholesale',sep:837704,oct:248322,pct:-70.4}
+    ];
+    const migration=[
+      {reason:'已抓取—尚未编入索引',before:10793896,after:12576160,delta:1782264,share:74.48,judgement:'主体：质量重评估'},
+      {reason:'已发现—尚未编入索引',before:20335582,after:20826445,delta:490863,share:20.51,judgement:'发现队列 / 生命周期污染'},
+      {reason:'网页会自动重定向',before:3418294,after:3561256,delta:142962,share:5.97,judgement:'重定向池扩大'},
+      {reason:'备用网页（有适当 canonical）',before:2115502,after:2095820,delta:-19682,share:-0.82,judgement:'抵消项'},
+      {reason:'其他原因合计',before:null,after:null,delta:-3259,share:-0.14,judgement:'抵消项'}
+    ];
+    const currentReasons=[
+      ['已发现未索引',20826445,'#fbbf24'],['已抓取未索引',12576160,'#38bdf8'],['重定向',3561256,'#a78bfa'],['替代页 canonical',2095820,'#2dd4bf'],['404',1806089,'#fb7185'],['重复/未选 canonical',499680,'#64748b'],['robots 阻止',46464,'#64748b'],['其他',16741,'#64748b']
+    ];
+    const fmt=n=>n===null?'—':new Intl.NumberFormat('zh-CN').format(n);
+    const signed=n=>(n>0?'+':'')+fmt(n);
+    function barHTML(label,pct,value,color){return `<div class="bar-row"><div class="bar-label">${label}</div><div class="track"><div class="fill" style="--w:${Math.max(1,Math.abs(pct))}%;--c:${color}"></div></div><div class="bar-value">${value}</div></div>`}
+    document.querySelector('#siteBars').innerHTML=siteData.map(d=>barHTML(d.site,Math.abs(d.delta)/2016527*100,`${d.delta>0?'+':''}${(d.delta/10000).toFixed(1)}万 · ${d.pct>0?'+':''}${d.pct}%`,d.color)).join('');
+    const maxCrawl=Math.max(...crawlData.map(d=>d.sep));document.querySelector('#crawlBars').innerHTML=crawlData.map(d=>barHTML(d.label,d.sep/maxCrawl*100,`${fmt(d.sep)} → ${fmt(d.oct)} · ${d.pct}%`,d.pct<=-45?'#fb7185':'#fbbf24')).join('');
+    function renderReasons(mode='share'){
+      const max=Math.max(...migration.map(d=>Math.abs(mode==='share'?d.share:d.delta)));
+      document.querySelector('#reasonBars').innerHTML=migration.map(d=>{const v=mode==='share'?d.share:d.delta;return barHTML(d.reason,Math.abs(v)/max*100,mode==='share'?`${v>0?'+':''}${v.toFixed(1)}%`:signed(v),v<0?'#fb7185':d.reason.includes('抓取')?'#38bdf8':d.reason.includes('发现')?'#fbbf24':'#a78bfa')}).join('');
+    }
+    renderReasons();
+    document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderReasons(b.dataset.mode)});
+    document.querySelector('#migrationTable tbody').innerHTML=migration.map(d=>`<tr><td>${d.reason}</td><td data-v="${d.before??-1}">${fmt(d.before)}</td><td data-v="${d.after??-1}">${fmt(d.after)}</td><td class="${d.delta>0?'warn':'good'}" data-v="${d.delta}">${signed(d.delta)}</td><td data-v="${d.share}">${d.share>0?'+':''}${d.share.toFixed(2)}%</td><td>${d.judgement}</td></tr>`).join('');
+    const http=[['已抓取未索引','18×200 · 2×308',90,'#34d399'],['已发现未索引','5×200 · 1×308 · 1×404 · 13×410',25,'#fbbf24'],['重定向','20×308',100,'#a78bfa']];
+    document.querySelector('#httpBars').innerHTML=http.map(d=>barHTML(d[0],d[2],d[1],d[3])).join('');
+    const maxCurrent=currentReasons[0][1];document.querySelector('#currentReasonBars').innerHTML=currentReasons.map(d=>barHTML(d[0],d[1]/maxCurrent*100,fmt(d[1]),d[2])).join('');
+    document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.target).scrollIntoView({behavior:'smooth'}));
+    const sections=[...document.querySelectorAll('main section')],navs=[...document.querySelectorAll('.nav button')];
+    const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)navs.forEach(n=>n.classList.toggle('active',n.dataset.target===e.target.id))}),{rootMargin:'-25% 0px -65%'});sections.forEach(s=>observer.observe(s));
+    document.querySelectorAll('#diagFilters .filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('#diagFilters .filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.diag').forEach(c=>c.classList.toggle('hidden',b.dataset.filter!=='all'&&c.dataset.type!==b.dataset.filter))});
+    function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+    const conclusion=`EN Product SEO 索引下降核心结论：\n1. 2026-09-22 已索引单日下降 2,016,527（-35.65%），但同日曝光上升 6.44%，随后索引量横盘，属于集中重分类而非持续崩跌。\n2. 未索引增加 2,393,148，其中“已抓取未索引”增加 1,782,264，占 74.5%，是主体迁移方向。\n3. 巡天同期累计数据显示：EN 总唯一抓取量从 9 月 9 日的 11,035,401 降至 10 月 9 日的 5,596,209（-49.3%）；Product 从 8,986,357 降至 4,724,616（-47.4%）。多语站未同步大幅下降，问题更集中于 EN 页面池。\n4. 索引下降早于 10 月同期抓取缩量，不能表述为“抓取下降导致索引下降”；更合理的解释是低价值 URL 被集中重评估后，Google 进一步降低其抓取优先级。\n5. 有效 200 样本未发现系统性 noindex、canonical 或 robots 故障；生命周期清退滞后、非等价 308、参数复制及 Product Sitemap 父索引读取异常是问题放大器。\n6. P0：失效 URL 日清、停止非等价重定向、修复 Sitemap 原子发布与缓存；P1：建立 Sitemap 质量准入并阻断参数 URL 传播。零曝光/点击不等于零 GMV，批量 noindex 前必须连接真实上线日期与交易数据并支持白名单和回滚。`;
+    document.getElementById('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(conclusion);toast('核心结论已复制')}catch{toast('浏览器未授权剪贴板，请手动复制')}};
+    document.getElementById('csvBtn').onclick=()=>{const rows=[['数据源','范围/样本','数据日期','用于回答','限制'],...Array.from(document.querySelectorAll('#sourceTable tbody tr')).map(tr=>Array.from(tr.cells).map(td=>td.innerText))];const csv='\ufeff'+rows.map(r=>r.map(x=>'"'+x.replaceAll('"','""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='EN_Product_SEO索引下降_数据源表.csv';a.click();URL.revokeObjectURL(a.href);toast('数据源表已下载')};
+    document.querySelectorAll('th[data-sort]').forEach((th,i)=>th.onclick=()=>{const table=th.closest('table'),body=table.tBodies[0],rows=[...body.rows],asc=th.dataset.asc!=='1';rows.sort((a,b)=>{let x=a.cells[i].dataset.v??a.cells[i].innerText,y=b.cells[i].dataset.v??b.cells[i].innerText;return (th.dataset.sort==='num'?Number(x)-Number(y):x.localeCompare(y,'zh-CN'))*(asc?1:-1)});rows.forEach(r=>body.appendChild(r));th.dataset.asc=asc?'1':'0'});
+  </script>
+</body>
+</html>
